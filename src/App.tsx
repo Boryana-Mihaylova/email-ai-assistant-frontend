@@ -100,6 +100,14 @@ function App() {
       setModalLoading(false);
     }
   }
+  function cleanFormatting() {
+    const cleaned = rawText
+      .replace(/\n{2,}/g, "\n")
+      .replace(/[ \t]+/g, " ")
+      .trim();
+
+    setRawText(cleaned);
+  }
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
@@ -107,16 +115,27 @@ function App() {
 
       <textarea
         rows={10}
-        style={{ width: "100%", marginBottom: 12 }}
+        style={{ width: "100%", marginBottom: 4 }}
         placeholder="Paste your emails here or load demo data..."
         value={rawText}
         onChange={(e) => setRawText(e.target.value)}
       />
 
+      <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
+        Tip: Use <strong>Clean formatting</strong> after pasting emails from
+        Gmail or Outlook. You can separate multiple emails with <code>---</code>
+        .
+      </p>
+
       <div style={{ marginBottom: 16 }}>
         <button onClick={loadDemo} style={{ marginRight: 8 }}>
           Load demo
         </button>
+
+        <button onClick={cleanFormatting} style={{ marginRight: 8 }}>
+          Clean formatting
+        </button>
+
         <button onClick={analyzeEmails} disabled={loading}>
           {loading ? "Analyzing..." : "Analyze"}
         </button>
