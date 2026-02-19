@@ -84,6 +84,7 @@ function App() {
         body: JSON.stringify({
           email_content: email.content,
           urgency: email.urgency,
+          intent: email.intent,
         }),
       });
 
