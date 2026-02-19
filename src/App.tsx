@@ -12,6 +12,14 @@ type EmailItem = {
   actions?: string[];
 };
 
+type SentItem = {
+  email_id: number;
+  intent: string;
+  draft: string;
+  status: string;
+  sent_at: string;
+};
+
 type FollowUp = {
   normal_emails_count: number;
   suggested_time: string;
@@ -32,6 +40,11 @@ function App() {
   const urgentEmails = emails.filter((e) => e.urgency === "urgent");
   const normalEmails = emails.filter((e) => e.urgency === "normal");
   const lowEmails = emails.filter((e) => e.urgency === "low");
+
+  const [sentLog, setSentLog] = useState<SentItem[]>([]);
+  const [sentLogOpen, setSentLogOpen] = useState(false);
+  const [sentLogLoading, setSentLogLoading] = useState(false);
+  const [sentJustNow, setSentJustNow] = useState(false);
 
   const API_BASE = "http://127.0.0.1:8000";
 
@@ -72,9 +85,40 @@ function App() {
     }
   }
 
+  async function loadSentLog() {
+    setSentLogLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/emails/sent`);
+      const data = await res.json();
+      setSentLog(data.items ?? []);
+      setSentLogOpen(true);
+    } catch {
+      setError("Failed to load sent log.");
+    } finally {
+      setSentLogLoading(false);
+    }
+  }
+
+  async function clearSentLog() {
+    setError(null);
+
+    try {
+      await fetch(`${API_BASE}/emails/sent/clear`, {
+        method: "POST",
+      });
+
+      setSentLog([]);
+    } catch {
+      setError("Failed to clear outbox.");
+    }
+  }
+
   async function suggestReply(email: EmailItem) {
     setModalOpen(true);
     setApproveStatus(null);
+    setSentJustNow(false);
     setModalEmailId(email.id);
     setModalDraft("");
     setModalLoading(true);
@@ -133,6 +177,9 @@ function App() {
 
       const data = await res.json();
       setApproveStatus(data.message ?? "Marked as sent (simulated).");
+      setEmails((prev) => prev.filter((e) => e.id !== modalEmailId));
+      setTimeout(() => setModalOpen(false), 800);
+      setSentJustNow(true);
     } catch {
       setApproveStatus("Failed to approve/send.");
     }
@@ -167,6 +214,9 @@ function App() {
 
         <button onClick={analyzeEmails} disabled={loading}>
           {loading ? "Analyzing..." : "Analyze"}
+        </button>
+        <button onClick={loadSentLog} disabled={sentLogLoading}>
+          {sentLogLoading ? "Loading log..." : "Outbox (simulated)"}
         </button>
       </div>
 
@@ -208,6 +258,64 @@ function App() {
           )}
         </div>
       ))}
+
+      {sentLogOpen && (
+        <div
+          style={{
+            border: "1px solid #ddd",
+            padding: 12,
+            borderRadius: 8,
+            marginBottom: 12,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 12,
+              alignItems: "center",
+            }}
+          >
+            <strong>Outbox (simulated)</strong>
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={() => setSentLogOpen(false)}>Close</button>
+
+              <button
+                onClick={clearSentLog}
+                disabled={sentLog.length === 0}
+                style={{ color: "#b00020" }}
+                title="Demo helper: clears the simulated outbox"
+              >
+                Clear (demo)
+              </button>
+            </div>
+          </div>
+          <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
+            This is a demo-only outbox. No real emails are sent.
+          </p>
+
+          {sentLog.length === 0 ? (
+            <p style={{ marginTop: 8 }}>No sent items yet.</p>
+          ) : (
+            <ul style={{ marginTop: 8 }}>
+              {sentLog.map((item, idx) => (
+                <li key={idx} style={{ marginBottom: 8 }}>
+                  <div>
+                    <strong>Email ID:</strong> {item.email_id}
+                  </div>
+                  <div>
+                    <strong>Intent:</strong> {item.intent}
+                  </div>
+                  <div>
+                    <strong>Sent at:</strong> {item.sent_at}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       {followUp && followUp.normal_emails_count > 0 && (
         <div
@@ -315,7 +423,6 @@ function App() {
               }}
             >
               <h3 style={{ margin: 0 }}>Reply draft</h3>
-              <button onClick={() => setModalOpen(false)}>Close</button>
             </div>
 
             <p style={{ marginTop: 8, color: "#444" }}>
@@ -344,9 +451,9 @@ function App() {
               <button onClick={() => setModalOpen(false)}>Close</button>
               <button
                 onClick={approveAndSend}
-                disabled={modalLoading || !modalDraft.trim()}
+                disabled={modalLoading || !modalDraft.trim() || sentJustNow}
               >
-                Approve & send
+                {sentJustNow ? "Sent ✓" : "Approve & send"}
               </button>
             </div>
             {approveStatus && (
