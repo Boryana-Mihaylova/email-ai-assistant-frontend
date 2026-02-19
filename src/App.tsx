@@ -7,6 +7,7 @@ type EmailItem = {
   content: string;
   summary: string;
   urgency: string;
+  intent?: string;
   reason: string;
   actions?: string[];
 };
@@ -23,6 +24,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [approveStatus, setApproveStatus] = useState<string | null>(null);
   const [modalDraft, setModalDraft] = useState("");
   const [modalEmailId, setModalEmailId] = useState<number | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
@@ -72,6 +74,7 @@ function App() {
 
   async function suggestReply(email: EmailItem) {
     setModalOpen(true);
+    setApproveStatus(null);
     setModalEmailId(email.id);
     setModalDraft("");
     setModalLoading(true);
@@ -108,6 +111,31 @@ function App() {
       .trim();
 
     setRawText(cleaned);
+  }
+
+  async function approveAndSend() {
+    if (modalEmailId == null) return;
+
+    setApproveStatus("Sending...");
+    try {
+      const email = emails.find((e) => e.id === modalEmailId);
+      const intent = email?.intent ?? "default";
+
+      const res = await fetch(`${API_BASE}/emails/reply/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email_id: modalEmailId,
+          intent,
+          draft: modalDraft,
+        }),
+      });
+
+      const data = await res.json();
+      setApproveStatus(data.message ?? "Marked as sent (simulated).");
+    } catch {
+      setApproveStatus("Failed to approve/send.");
+    }
   }
 
   return (
@@ -314,7 +342,16 @@ function App() {
               }}
             >
               <button onClick={() => setModalOpen(false)}>Close</button>
+              <button
+                onClick={approveAndSend}
+                disabled={modalLoading || !modalDraft.trim()}
+              >
+                Approve & send
+              </button>
             </div>
+            {approveStatus && (
+              <p style={{ marginTop: 8, color: "#444" }}>{approveStatus}</p>
+            )}
           </div>
         </div>
       )}
