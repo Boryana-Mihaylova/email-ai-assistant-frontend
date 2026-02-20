@@ -45,12 +45,20 @@ function App() {
   const [sentLogOpen, setSentLogOpen] = useState(false);
   const [sentLogLoading, setSentLogLoading] = useState(false);
   const [sentJustNow, setSentJustNow] = useState(false);
+  const [lastAnalyzedText, setLastAnalyzedText] = useState("");
 
   const API_BASE = "http://127.0.0.1:8000";
 
   async function loadDemo() {
     setError(null);
+
     try {
+      const clearRes = await fetch(`${API_BASE}/emails/sent/clear`, {
+        method: "POST",
+      });
+      if (!clearRes.ok) throw new Error("Clear failed");
+      setSentLog([]);
+
       const res = await fetch(`${API_BASE}/emails/demo`);
       const data = await res.json();
       setRawText(data.raw_text);
@@ -60,13 +68,16 @@ function App() {
   }
 
   async function analyzeEmails() {
-    if (!rawText.trim()) {
-      setError("Please paste emails or load demo data.");
-      return;
-    }
-
     setLoading(true);
     setError(null);
+    if (rawText !== lastAnalyzedText) {
+      const clearRes = await fetch(`${API_BASE}/emails/sent/clear`, {
+        method: "POST",
+      });
+      if (!clearRes.ok) throw new Error("Clear failed");
+      setSentLog([]);
+      setLastAnalyzedText(rawText);
+    }
 
     setSentLogOpen(false);
     setSentLog([]);
