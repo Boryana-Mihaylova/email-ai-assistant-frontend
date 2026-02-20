@@ -202,6 +202,9 @@ function App() {
       setEmails((prev) => prev.filter((e) => e.id !== modalEmailId));
       setTimeout(() => setModalOpen(false), 800);
       setSentJustNow(true);
+      if (sentLogOpen) {
+        await loadSentLog();
+      }
     } catch {
       setApproveStatus("Failed to approve/send.");
     }
@@ -248,39 +251,6 @@ function App() {
 
       <h2>Results</h2>
 
-      {emails.length === 0 && <p>No emails analyzed yet.</p>}
-
-      {urgentEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-
-          {email.actions?.includes("suggest_reply_now") && (
-            <button onClick={() => suggestReply(email)}>Suggest reply</button>
-          )}
-        </div>
-      ))}
-
       {sentLogOpen && (
         <div
           style={{
@@ -313,6 +283,7 @@ function App() {
               </button>
             </div>
           </div>
+
           <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
             This is a demo-only outbox. No real emails are sent.
           </p>
@@ -338,6 +309,39 @@ function App() {
           )}
         </div>
       )}
+
+      {emails.length === 0 && <p>No emails analyzed yet.</p>}
+
+      {urgentEmails.map((email) => (
+        <div
+          key={email.id}
+          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+        >
+          <h3 style={{ margin: "0 0 4px 0" }}>
+            {email.subject ?? "No subject"}
+          </h3>
+
+          {email.from && (
+            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
+              <strong>From:</strong> {email.from}
+            </p>
+          )}
+
+          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
+            <strong>Summary:</strong> {email.summary}
+          </p>
+
+          <p style={{ margin: "4px 0" }}>
+            <strong>Urgency:</strong> {email.urgency}
+          </p>
+
+          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+
+          {email.actions?.includes("suggest_reply_now") && (
+            <button onClick={() => suggestReply(email)}>Suggest reply</button>
+          )}
+        </div>
+      ))}
 
       {followUp && followUp.normal_emails_count > 0 && (
         <div
