@@ -68,6 +68,9 @@ function App() {
     setLoading(true);
     setError(null);
 
+    setSentLogOpen(false);
+    setSentLog([]);
+
     try {
       const res = await fetch(`${API_BASE}/emails/analyze`, {
         method: "POST",
@@ -103,15 +106,23 @@ function App() {
 
   async function clearSentLog() {
     setError(null);
+    setSentLogLoading(true);
+    setSentLogOpen(false);
 
     try {
-      await fetch(`${API_BASE}/emails/sent/clear`, {
+      const res = await fetch(`${API_BASE}/emails/sent/clear`, {
         method: "POST",
       });
+
+      if (!res.ok) {
+        throw new Error("Clear failed");
+      }
 
       setSentLog([]);
     } catch {
       setError("Failed to clear outbox.");
+    } finally {
+      setSentLogLoading(false);
     }
   }
 
@@ -216,7 +227,7 @@ function App() {
           {loading ? "Analyzing..." : "Analyze"}
         </button>
         <button onClick={loadSentLog} disabled={sentLogLoading}>
-          {sentLogLoading ? "Loading log..." : "Outbox (simulated)"}
+          {sentLogLoading ? "Loading log..." : "Outbox"}
         </button>
       </div>
 
@@ -302,7 +313,7 @@ function App() {
               {sentLog.map((item, idx) => (
                 <li key={idx} style={{ marginBottom: 8 }}>
                   <div>
-                    <strong>Email ID:</strong> {item.email_id}
+                    <strong>Email:</strong> {item.email_id}
                   </div>
                   <div>
                     <strong>Intent:</strong> {item.intent}
@@ -426,7 +437,7 @@ function App() {
             </div>
 
             <p style={{ marginTop: 8, color: "#444" }}>
-              Email ID: {modalEmailId ?? "-"}
+              Email: {modalEmailId ?? "-"}
             </p>
 
             {modalLoading ? (
