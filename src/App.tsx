@@ -214,6 +214,7 @@ function App() {
     <div
       style={{
         minHeight: "100vh",
+        width: "100%",
         padding: "32px 24px",
         boxSizing: "border-box",
         display: "flex",
@@ -222,10 +223,9 @@ function App() {
     >
       <div
         style={{
-          width: "100%",
           maxWidth: 900,
           padding: 32,
-          marginLeft: "clamp(0px, 4vw, 60px)",
+          flex: "0 1 900px",
         }}
       >
         <h1>Email AI Assistant</h1>
