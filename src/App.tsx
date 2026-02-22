@@ -48,6 +48,7 @@ function App() {
   const [sentJustNow, setSentJustNow] = useState(false);
   const [lastAnalyzedText, setLastAnalyzedText] = useState("");
   const [analyzeHover, setAnalyzeHover] = useState(false);
+  const [hoverBtn, setHoverBtn] = useState<string | null>(null);
 
   const API_BASE = "http://127.0.0.1:8000";
   const cardStyle: React.CSSProperties = {
@@ -62,6 +63,29 @@ function App() {
     borderRadius: 14,
     border: "1px solid rgba(0, 0, 0, 0.06)",
     boxShadow: "0 6px 18px rgba(0, 0, 0, 0.06)",
+  };
+  const primaryButtonBase: React.CSSProperties = {
+    padding: "0.6em 1.4em",
+    borderRadius: 10,
+    border: "none",
+    color: "#fff",
+    outline: "none",
+    fontWeight: 600,
+    background: "linear-gradient(90deg, #2ecc71, #3498db)",
+    cursor: "pointer",
+    transition: "filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease",
+  };
+
+  const secondaryButtonBase: React.CSSProperties = {
+    padding: "0.55em 1.3em",
+    borderRadius: 10,
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(235,240,242,0.92))",
+    border: "1px solid rgba(0,0,0,0.14)",
+    color: "#1f2933",
+    fontWeight: 500,
+    cursor: "pointer",
+    transition: "filter 0.2s ease",
   };
 
   async function loadDemo() {
@@ -323,39 +347,81 @@ function App() {
         </p>
 
         <div style={{ marginBottom: 16 }}>
-          <button onClick={loadDemo} style={{ marginRight: 8 }}>
+          <button
+            onClick={loadDemo}
+            onMouseEnter={() => setHoverBtn("loadDemo")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              marginRight: 8,
+              filter: hoverBtn === "loadDemo" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "loadDemo" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "loadDemo"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
             Load demo
           </button>
 
-          <button onClick={cleanFormatting} style={{ marginRight: 8 }}>
+          <button
+            onClick={cleanFormatting}
+            onMouseEnter={() => setHoverBtn("cleanFormatting")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              marginRight: 8,
+              filter:
+                hoverBtn === "cleanFormatting" ? "brightness(1.18)" : "none",
+              transform:
+                hoverBtn === "cleanFormatting" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "cleanFormatting"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
             Clean formatting
           </button>
 
           <button
             onClick={analyzeEmails}
             disabled={loading}
-            onMouseEnter={() => setAnalyzeHover(true)}
-            onMouseLeave={() => setAnalyzeHover(false)}
+            onMouseEnter={() => setHoverBtn("analyze")}
+            onMouseLeave={() => setHoverBtn(null)}
             style={{
+              ...primaryButtonBase,
               marginRight: 8,
-              padding: "0.6em 1.4em",
-              borderRadius: 10,
-              border: "none",
-              color: "#fff",
-              fontWeight: 600,
-              background: "linear-gradient(90deg, #2ecc71, #3498db)",
-              cursor: "pointer",
-              transition: "filter 0.2s ease, transform 0.15s ease",
-              filter: analyzeHover ? "brightness(1.18)" : "none",
-              transform: analyzeHover ? "translateY(-1px)" : "none",
-              boxShadow: analyzeHover
-                ? "0 10px 26px rgba(46, 204, 113, 0.25)"
-                : "none",
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "default" : "pointer",
+              filter: hoverBtn === "analyze" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "analyze" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "analyze"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
             }}
           >
             {loading ? "Analyzing..." : "Analyze"}
           </button>
-          <button onClick={loadSentLog} disabled={sentLogLoading}>
+          <button
+            onClick={loadSentLog}
+            disabled={sentLogLoading}
+            onMouseEnter={() => setHoverBtn("outbox")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              opacity: sentLogLoading ? 0.7 : 1,
+              cursor: sentLogLoading ? "default" : "pointer",
+              filter: hoverBtn === "outbox" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "outbox" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "outbox"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
             {sentLogLoading ? "Loading log..." : "Outbox"}
           </button>
         </div>
@@ -386,13 +452,33 @@ function App() {
               <strong>Outbox (simulated)</strong>
 
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={() => setSentLogOpen(false)}>Close</button>
+                <button
+                  onClick={() => setSentLogOpen(false)}
+                  onMouseEnter={() => setHoverBtn("outboxClose")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...secondaryButtonBase,
+                    filter:
+                      hoverBtn === "outboxClose" ? "brightness(0.98)" : "none",
+                  }}
+                >
+                  Close
+                </button>
 
                 <button
                   onClick={clearSentLog}
                   disabled={sentLog.length === 0}
-                  style={{ color: "#b00020" }}
+                  onMouseEnter={() => setHoverBtn("outboxClear")}
+                  onMouseLeave={() => setHoverBtn(null)}
                   title="Demo helper: clears the simulated outbox"
+                  style={{
+                    ...secondaryButtonBase,
+                    color: "#b00020",
+                    opacity: sentLog.length === 0 ? 0.65 : 1,
+                    cursor: sentLog.length === 0 ? "default" : "pointer",
+                    filter:
+                      hoverBtn === "outboxClear" ? "brightness(0.98)" : "none",
+                  }}
                 >
                   Clear (demo)
                 </button>
@@ -453,7 +539,28 @@ function App() {
             <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
 
             {email.actions?.includes("suggest_reply_now") && (
-              <button onClick={() => suggestReply(email)}>Suggest reply</button>
+              <button
+                onClick={() => suggestReply(email)}
+                onMouseEnter={() => setHoverBtn(`suggest-${email.id}`)}
+                onMouseLeave={() => setHoverBtn(null)}
+                style={{
+                  ...primaryButtonBase,
+                  filter:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "brightness(1.18)"
+                      : "none",
+                  transform:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "translateY(-1px)"
+                      : "none",
+                  boxShadow:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                      : "none",
+                }}
+              >
+                Suggest reply
+              </button>
             )}
           </div>
         ))}
@@ -603,10 +710,42 @@ function App() {
                   gap: 8,
                 }}
               >
-                <button onClick={() => setModalOpen(false)}>Close</button>
+                <button
+                  onClick={() => setModalOpen(false)}
+                  onMouseEnter={() => setHoverBtn("modalClose")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...secondaryButtonBase,
+                    filter:
+                      hoverBtn === "modalClose" ? "brightness(0.98)" : "none",
+                  }}
+                >
+                  Close
+                </button>
                 <button
                   onClick={approveAndSend}
                   disabled={modalLoading || !modalDraft.trim() || sentJustNow}
+                  onMouseEnter={() => setHoverBtn("approveSend")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...primaryButtonBase,
+                    opacity:
+                      modalLoading || !modalDraft.trim() || sentJustNow
+                        ? 0.7
+                        : 1,
+                    cursor:
+                      modalLoading || !modalDraft.trim() || sentJustNow
+                        ? "default"
+                        : "pointer",
+                    filter:
+                      hoverBtn === "approveSend" ? "brightness(1.18)" : "none",
+                    transform:
+                      hoverBtn === "approveSend" ? "translateY(-1px)" : "none",
+                    boxShadow:
+                      hoverBtn === "approveSend"
+                        ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                        : "none",
+                  }}
                 >
                   {sentJustNow ? "Sent ✓" : "Approve & send"}
                 </button>
