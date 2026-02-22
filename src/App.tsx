@@ -275,13 +275,29 @@ function App() {
       >
         <h1>Email AI Assistant</h1>
 
-        <textarea
-          rows={10}
-          style={{ width: "100%", marginBottom: 4 }}
-          placeholder="Paste your emails here or load demo data..."
-          value={rawText}
-          onChange={(e) => setRawText(e.target.value)}
-        />
+        <div
+          style={{
+            ...cardStyle,
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 20,
+            overflow: "hidden",
+          }}
+        >
+          <textarea
+            rows={10}
+            style={{
+              width: "100%",
+              marginBottom: 4,
+              background: "transparent",
+              border: "none",
+              outline: "none",
+            }}
+            placeholder="Paste your emails here or load demo data..."
+            value={rawText}
+            onChange={(e) => setRawText(e.target.value)}
+          />
+        </div>
 
         <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
           Tip: Use <strong>Clean formatting</strong> after pasting emails from
