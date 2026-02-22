@@ -1,4 +1,5 @@
 import { useState } from "react";
+import inboxIllustration from "./assets/undraw_inbox-cleanup.svg";
 
 type EmailItem = {
   id: number;
@@ -215,12 +216,47 @@ function App() {
       style={{
         minHeight: "100vh",
         width: "100%",
+        background: `
+          linear-gradient(
+            165deg,
+           #e9eef1 0%,
+           #cfdde2 35%,
+           #b8cfd3 65%,
+           #a8c1c6 100%
+          )
+        `,
         padding: "32px 24px",
         boxSizing: "border-box",
         display: "flex",
         justifyContent: "center",
+        position: "relative",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "40px",
+          width: "min(520px, 42vw)",
+          height: "100%",
+          opacity: 0.06,
+          pointerEvents: "none",
+          transform: "translateY(-50%)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src={inboxIllustration}
+          alt="Inbox cleanup illustration"
+          style={{
+            width: "100%",
+            maxWidth: 520,
+            filter: "brightness(1.6) contrast(1.1)",
+          }}
+        />
+      </div>
       <div
         style={{
           maxWidth: 900,
