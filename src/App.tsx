@@ -211,234 +211,69 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
-      <h1>Email AI Assistant</h1>
+    <div
+      style={{
+        minHeight: "100vh",
+        padding: "32px 24px",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 900,
+          padding: 32,
+          marginLeft: "clamp(0px, 4vw, 60px)",
+        }}
+      >
+        <h1>Email AI Assistant</h1>
 
-      <textarea
-        rows={10}
-        style={{ width: "100%", marginBottom: 4 }}
-        placeholder="Paste your emails here or load demo data..."
-        value={rawText}
-        onChange={(e) => setRawText(e.target.value)}
-      />
+        <textarea
+          rows={10}
+          style={{ width: "100%", marginBottom: 4 }}
+          placeholder="Paste your emails here or load demo data..."
+          value={rawText}
+          onChange={(e) => setRawText(e.target.value)}
+        />
 
-      <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
-        Tip: Use <strong>Clean formatting</strong> after pasting emails from
-        Gmail or Outlook. You can separate multiple emails with <code>---</code>
-        .
-      </p>
+        <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
+          Tip: Use <strong>Clean formatting</strong> after pasting emails from
+          Gmail or Outlook. You can separate multiple emails with{" "}
+          <code>---</code>.
+        </p>
 
-      <div style={{ marginBottom: 16 }}>
-        <button onClick={loadDemo} style={{ marginRight: 8 }}>
-          Load demo
-        </button>
+        <div style={{ marginBottom: 16 }}>
+          <button onClick={loadDemo} style={{ marginRight: 8 }}>
+            Load demo
+          </button>
 
-        <button onClick={cleanFormatting} style={{ marginRight: 8 }}>
-          Clean formatting
-        </button>
+          <button onClick={cleanFormatting} style={{ marginRight: 8 }}>
+            Clean formatting
+          </button>
 
-        <button onClick={analyzeEmails} disabled={loading}>
-          {loading ? "Analyzing..." : "Analyze"}
-        </button>
-        <button onClick={loadSentLog} disabled={sentLogLoading}>
-          {sentLogLoading ? "Loading log..." : "Outbox"}
-        </button>
-      </div>
+          <button onClick={analyzeEmails} disabled={loading}>
+            {loading ? "Analyzing..." : "Analyze"}
+          </button>
+          <button onClick={loadSentLog} disabled={sentLogLoading}>
+            {sentLogLoading ? "Loading log..." : "Outbox"}
+          </button>
+        </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <hr />
+        <hr />
 
-      <h2>Results</h2>
+        <h2>Results</h2>
 
-      {sentLogOpen && (
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            borderRadius: 8,
-            marginBottom: 12,
-          }}
-        >
+        {sentLogOpen && (
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              alignItems: "center",
-            }}
-          >
-            <strong>Outbox (simulated)</strong>
-
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => setSentLogOpen(false)}>Close</button>
-
-              <button
-                onClick={clearSentLog}
-                disabled={sentLog.length === 0}
-                style={{ color: "#b00020" }}
-                title="Demo helper: clears the simulated outbox"
-              >
-                Clear (demo)
-              </button>
-            </div>
-          </div>
-
-          <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
-            This is a demo-only outbox. No real emails are sent.
-          </p>
-
-          {sentLog.length === 0 ? (
-            <p style={{ marginTop: 8 }}>No sent items yet.</p>
-          ) : (
-            <ul style={{ marginTop: 8 }}>
-              {sentLog.map((item, idx) => (
-                <li key={idx} style={{ marginBottom: 8 }}>
-                  <div>
-                    <strong>Email:</strong> {item.email_id}
-                  </div>
-                  <div>
-                    <strong>Intent:</strong> {item.intent}
-                  </div>
-                  <div>
-                    <strong>Sent at:</strong> {item.sent_at}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {emails.length === 0 && <p>No emails analyzed yet.</p>}
-
-      {urgentEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-
-          {email.actions?.includes("suggest_reply_now") && (
-            <button onClick={() => suggestReply(email)}>Suggest reply</button>
-          )}
-        </div>
-      ))}
-
-      {followUp && followUp.normal_emails_count > 0 && (
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            marginBottom: 12,
-            borderRadius: 8,
-          }}
-        >
-          <strong>Follow-up</strong>
-          <p style={{ margin: "6px 0" }}>{followUp.message}</p>
-          <p style={{ margin: 0, color: "#444" }}>
-            Suggested time: {followUp.suggested_time}
-          </p>
-        </div>
-      )}
-
-      {normalEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-        </div>
-      ))}
-
-      {lowEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-        </div>
-      ))}
-
-      {modalOpen && (
-        <div
-          onClick={() => setModalOpen(false)}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.35)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: "100%",
-              maxWidth: 700,
-              background: "white",
-              borderRadius: 12,
-              padding: 16,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              border: "1px solid #ddd",
+              padding: 12,
+              borderRadius: 8,
+              marginBottom: 12,
             }}
           >
             <div
@@ -446,48 +281,230 @@ function App() {
                 display: "flex",
                 justifyContent: "space-between",
                 gap: 12,
+                alignItems: "center",
               }}
             >
-              <h3 style={{ margin: 0 }}>Reply draft</h3>
+              <strong>Outbox (simulated)</strong>
+
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => setSentLogOpen(false)}>Close</button>
+
+                <button
+                  onClick={clearSentLog}
+                  disabled={sentLog.length === 0}
+                  style={{ color: "#b00020" }}
+                  title="Demo helper: clears the simulated outbox"
+                >
+                  Clear (demo)
+                </button>
+              </div>
             </div>
 
-            <p style={{ marginTop: 8, color: "#444" }}>
-              Email: {modalEmailId ?? "-"}
+            <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
+              This is a demo-only outbox. No real emails are sent.
             </p>
 
-            {modalLoading ? (
-              <p>Generating draft...</p>
+            {sentLog.length === 0 ? (
+              <p style={{ marginTop: 8 }}>No sent items yet.</p>
             ) : (
-              <textarea
-                rows={10}
-                style={{ width: "100%" }}
-                value={modalDraft}
-                onChange={(e) => setModalDraft(e.target.value)}
-              />
-            )}
-
-            <div
-              style={{
-                marginTop: 12,
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 8,
-              }}
-            >
-              <button onClick={() => setModalOpen(false)}>Close</button>
-              <button
-                onClick={approveAndSend}
-                disabled={modalLoading || !modalDraft.trim() || sentJustNow}
-              >
-                {sentJustNow ? "Sent ✓" : "Approve & send"}
-              </button>
-            </div>
-            {approveStatus && (
-              <p style={{ marginTop: 8, color: "#444" }}>{approveStatus}</p>
+              <ul style={{ marginTop: 8 }}>
+                {sentLog.map((item, idx) => (
+                  <li key={idx} style={{ marginBottom: 8 }}>
+                    <div>
+                      <strong>Email:</strong> {item.email_id}
+                    </div>
+                    <div>
+                      <strong>Intent:</strong> {item.intent}
+                    </div>
+                    <div>
+                      <strong>Sent at:</strong> {item.sent_at}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
-        </div>
-      )}
+        )}
+
+        {emails.length === 0 && <p>No emails analyzed yet.</p>}
+
+        {urgentEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+          >
+            <h3 style={{ margin: "0 0 4px 0" }}>
+              {email.subject ?? "No subject"}
+            </h3>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
+                <strong>From:</strong> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
+              <strong>Summary:</strong> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <strong>Urgency:</strong> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+
+            {email.actions?.includes("suggest_reply_now") && (
+              <button onClick={() => suggestReply(email)}>Suggest reply</button>
+            )}
+          </div>
+        ))}
+
+        {followUp && followUp.normal_emails_count > 0 && (
+          <div
+            style={{
+              border: "1px solid #ddd",
+              padding: 12,
+              marginBottom: 12,
+              borderRadius: 8,
+            }}
+          >
+            <strong>Follow-up</strong>
+            <p style={{ margin: "6px 0" }}>{followUp.message}</p>
+            <p style={{ margin: 0, color: "#444" }}>
+              Suggested time: {followUp.suggested_time}
+            </p>
+          </div>
+        )}
+
+        {normalEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+          >
+            <h3 style={{ margin: "0 0 4px 0" }}>
+              {email.subject ?? "No subject"}
+            </h3>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
+                <strong>From:</strong> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
+              <strong>Summary:</strong> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <strong>Urgency:</strong> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+          </div>
+        ))}
+
+        {lowEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+          >
+            <h3 style={{ margin: "0 0 4px 0" }}>
+              {email.subject ?? "No subject"}
+            </h3>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
+                <strong>From:</strong> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
+              <strong>Summary:</strong> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <strong>Urgency:</strong> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+          </div>
+        ))}
+
+        {modalOpen && (
+          <div
+            onClick={() => setModalOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "rgba(0,0,0,0.35)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: 700,
+                background: "white",
+                borderRadius: 12,
+                padding: 16,
+                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 12,
+                }}
+              >
+                <h3 style={{ margin: 0 }}>Reply draft</h3>
+              </div>
+
+              <p style={{ marginTop: 8, color: "#444" }}>
+                Email: {modalEmailId ?? "-"}
+              </p>
+
+              {modalLoading ? (
+                <p>Generating draft...</p>
+              ) : (
+                <textarea
+                  rows={10}
+                  style={{ width: "100%" }}
+                  value={modalDraft}
+                  onChange={(e) => setModalDraft(e.target.value)}
+                />
+              )}
+
+              <div
+                style={{
+                  marginTop: 12,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: 8,
+                }}
+              >
+                <button onClick={() => setModalOpen(false)}>Close</button>
+                <button
+                  onClick={approveAndSend}
+                  disabled={modalLoading || !modalDraft.trim() || sentJustNow}
+                >
+                  {sentJustNow ? "Sent ✓" : "Approve & send"}
+                </button>
+              </div>
+              {approveStatus && (
+                <p style={{ marginTop: 8, color: "#444" }}>{approveStatus}</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
