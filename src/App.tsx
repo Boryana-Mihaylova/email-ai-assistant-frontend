@@ -239,7 +239,8 @@ function App() {
           left: "40px",
           width: "min(520px, 42vw)",
           height: "100%",
-          opacity: 0.06,
+          opacity: 0.48,
+          mixBlendMode: "multiply",
           pointerEvents: "none",
           transform: "translateY(-50%)",
           display: "flex",
@@ -252,8 +253,8 @@ function App() {
           alt="Inbox cleanup illustration"
           style={{
             width: "100%",
-            maxWidth: 520,
-            filter: "brightness(1.6) contrast(1.1)",
+            maxWidth: 640,
+            filter: "brightness(0.85) contrast(1.45)",
           }}
         />
       </div>
