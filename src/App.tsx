@@ -49,6 +49,13 @@ function App() {
   const [lastAnalyzedText, setLastAnalyzedText] = useState("");
 
   const API_BASE = "http://127.0.0.1:8000";
+  const cardStyle: React.CSSProperties = {
+    backgroundColor: "rgba(255, 255, 255, 0.65)",
+    borderRadius: 16,
+    backdropFilter: "blur(6px)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+    border: "1px solid rgba(255,255,255,0.75)",
+  };
 
   async function loadDemo() {
     setError(null);
@@ -234,11 +241,11 @@ function App() {
     >
       <div
         style={{
-          position: "absolute",
+          position: "fixed",
           top: "50%",
           left: "40px",
           width: "min(520px, 42vw)",
-          height: "100%",
+          height: "100vh",
           opacity: 0.48,
           mixBlendMode: "multiply",
           pointerEvents: "none",
@@ -308,7 +315,7 @@ function App() {
         {sentLogOpen && (
           <div
             style={{
-              border: "1px solid #ddd",
+              ...cardStyle,
               padding: 12,
               borderRadius: 8,
               marginBottom: 12,
@@ -369,7 +376,7 @@ function App() {
         {urgentEmails.map((email) => (
           <div
             key={email.id}
-            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
             <h3 style={{ margin: "0 0 4px 0" }}>
               {email.subject ?? "No subject"}
@@ -400,7 +407,7 @@ function App() {
         {followUp && followUp.normal_emails_count > 0 && (
           <div
             style={{
-              border: "1px solid #ddd",
+              ...cardStyle,
               padding: 12,
               marginBottom: 12,
               borderRadius: 8,
@@ -417,7 +424,7 @@ function App() {
         {normalEmails.map((email) => (
           <div
             key={email.id}
-            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
             <h3 style={{ margin: "0 0 4px 0" }}>
               {email.subject ?? "No subject"}
@@ -444,7 +451,7 @@ function App() {
         {lowEmails.map((email) => (
           <div
             key={email.id}
-            style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
             <h3 style={{ margin: "0 0 4px 0" }}>
               {email.subject ?? "No subject"}
