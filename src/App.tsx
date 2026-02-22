@@ -226,6 +226,7 @@ function App() {
           maxWidth: 900,
           padding: 32,
           flex: "0 1 900px",
+          transform: "translateX(clamp(0px, 12vw, 220px))",
         }}
       >
         <h1>Email AI Assistant</h1>
