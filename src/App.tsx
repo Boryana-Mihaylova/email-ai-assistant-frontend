@@ -47,6 +47,7 @@ function App() {
   const [sentLogLoading, setSentLogLoading] = useState(false);
   const [sentJustNow, setSentJustNow] = useState(false);
   const [lastAnalyzedText, setLastAnalyzedText] = useState("");
+  const [analyzeHover, setAnalyzeHover] = useState(false);
 
   const API_BASE = "http://127.0.0.1:8000";
   const cardStyle: React.CSSProperties = {
@@ -333,7 +334,24 @@ function App() {
           <button
             onClick={analyzeEmails}
             disabled={loading}
-            style={{ marginRight: 8 }}
+            onMouseEnter={() => setAnalyzeHover(true)}
+            onMouseLeave={() => setAnalyzeHover(false)}
+            style={{
+              marginRight: 8,
+              padding: "0.6em 1.4em",
+              borderRadius: 10,
+              border: "none",
+              color: "#fff",
+              fontWeight: 600,
+              background: "linear-gradient(90deg, #2ecc71, #3498db)",
+              cursor: "pointer",
+              transition: "filter 0.2s ease, transform 0.15s ease",
+              filter: analyzeHover ? "brightness(1.18)" : "none",
+              transform: analyzeHover ? "translateY(-1px)" : "none",
+              boxShadow: analyzeHover
+                ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                : "none",
+            }}
           >
             {loading ? "Analyzing..." : "Analyze"}
           </button>
