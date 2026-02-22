@@ -56,6 +56,12 @@ function App() {
     boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
     border: "1px solid rgba(255,255,255,0.75)",
   };
+  const innerCardStyle: React.CSSProperties = {
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
+    borderRadius: 14,
+    border: "1px solid rgba(0, 0, 0, 0.06)",
+    boxShadow: "0 6px 18px rgba(0, 0, 0, 0.06)",
+  };
 
   async function loadDemo() {
     setError(null);
@@ -299,9 +305,19 @@ function App() {
           />
         </div>
 
-        <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
-          Tip: Use <strong>Clean formatting</strong> after pasting emails from
-          Gmail or Outlook. You can separate multiple emails with{" "}
+        <p
+          style={{
+            fontSize: 18,
+            marginTop: 6,
+            color: "#1f2933",
+          }}
+        >
+          <span style={{ color: "#b00020", fontWeight: 600 }}>Important:</span>{" "}
+          Always use{" "}
+          <span style={{ color: "#b00020", fontWeight: 600 }}>
+            Clean formatting
+          </span>{" "}
+          after pasting emails. You can separate multiple emails with{" "}
           <code>---</code>.
         </p>
 
@@ -314,7 +330,11 @@ function App() {
             Clean formatting
           </button>
 
-          <button onClick={analyzeEmails} disabled={loading}>
+          <button
+            onClick={analyzeEmails}
+            disabled={loading}
+            style={{ marginRight: 8 }}
+          >
             {loading ? "Analyzing..." : "Analyze"}
           </button>
           <button onClick={loadSentLog} disabled={sentLogLoading}>
@@ -512,7 +532,9 @@ function App() {
               style={{
                 width: "100%",
                 maxWidth: 700,
-                background: "white",
+                backgroundColor: "rgba(255, 255, 255, 0.78)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.65)",
                 borderRadius: 12,
                 padding: 16,
                 boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
@@ -535,12 +557,24 @@ function App() {
               {modalLoading ? (
                 <p>Generating draft...</p>
               ) : (
-                <textarea
-                  rows={10}
-                  style={{ width: "100%" }}
-                  value={modalDraft}
-                  onChange={(e) => setModalDraft(e.target.value)}
-                />
+                <div
+                  style={{ ...innerCardStyle, padding: 12, overflow: "hidden" }}
+                >
+                  <textarea
+                    rows={10}
+                    style={{
+                      width: "100%",
+                      background: "transparent",
+                      border: "none",
+                      outline: "none",
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                      fontSize: "14px",
+                    }}
+                    value={modalDraft}
+                    onChange={(e) => setModalDraft(e.target.value)}
+                  />
+                </div>
               )}
 
               <div
