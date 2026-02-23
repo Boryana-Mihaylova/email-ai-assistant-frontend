@@ -138,6 +138,9 @@ Once both services are running, open the frontend URL in your browser to use the
 **Suggested reply draft opened and edited before approval (example 3)**  
 ![Reply draft example 3](screenshots/reply-draft-3.png)
 
+**Follow-up suggestion for non-urgent emails**
+![Follow-up suggestion](screenshots/follow-up.png)
+
 **Simulated outbox with sent replies**  
 ![Outbox](screenshots/outbox.png)
 
