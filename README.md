@@ -14,7 +14,7 @@ The project is intentionally scoped as a focused demo to showcase API design, AI
 
 ---
 
-## This project is split into two repositories: a React frontend and a FastAPI (Python) backend
+This project is split into two repositories: a React frontend and a FastAPI (Python) backend
 
 - Frontend repository: [email-ai-assistant-frontend](https://github.com/Boryana-Mihaylova/email-ai-assistant-frontend)
 - Backend repository: [email-ai-assistant-backend](https://github.com/Boryana-Mihaylova/email-ai-assistant-backend)
@@ -35,14 +35,14 @@ AI behavior in the demo is intentionally simulated using predefined logic. No re
 ## Tech Stack
 
 ### Backend
-    • Python
-    • FastAPI
-    • Uvicorn
+    - Python
+    - FastAPI
+    - Uvicorn
     
 ### Frontend
-    • React
-    • TypeScript
-    • Vite
+    - React
+    - TypeScript
+    - Vite
     
 ---
 
@@ -148,7 +148,6 @@ Once both services are running, open the frontend URL in your browser to use the
 
 ### Author
 
-Junior Software Developer
 Built as a learning and portfolio project
 
 ---
