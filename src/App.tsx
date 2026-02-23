@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import mailCircle from "./assets/email.svg";
+import mail from "./assets/email 2.svg";
+import aiFaceWater from "./assets/ai-face-water.svg";
+import email3 from "./assets/email 3.svg";
+
 type EmailItem = {
   id: number;
   subject?: string;
@@ -46,8 +51,46 @@ function App() {
   const [sentLogLoading, setSentLogLoading] = useState(false);
   const [sentJustNow, setSentJustNow] = useState(false);
   const [lastAnalyzedText, setLastAnalyzedText] = useState("");
+  const [analyzeHover, setAnalyzeHover] = useState(false);
+  const [hoverBtn, setHoverBtn] = useState<string | null>(null);
 
   const API_BASE = "http://127.0.0.1:8000";
+  const cardStyle: React.CSSProperties = {
+    backgroundColor: "rgba(255, 255, 255, 0.65)",
+    borderRadius: 16,
+    backdropFilter: "blur(6px)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+    border: "1px solid rgba(255,255,255,0.75)",
+  };
+  const innerCardStyle: React.CSSProperties = {
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
+    borderRadius: 14,
+    border: "1px solid rgba(0, 0, 0, 0.06)",
+    boxShadow: "0 6px 18px rgba(0, 0, 0, 0.06)",
+  };
+  const primaryButtonBase: React.CSSProperties = {
+    padding: "0.6em 1.4em",
+    borderRadius: 10,
+    border: "none",
+    color: "#fff",
+    outline: "none",
+    fontWeight: 600,
+    background: "linear-gradient(90deg, #2ecc71, #3498db)",
+    cursor: "pointer",
+    transition: "filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease",
+  };
+
+  const secondaryButtonBase: React.CSSProperties = {
+    padding: "0.55em 1.3em",
+    borderRadius: 10,
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(235,240,242,0.92))",
+    border: "1px solid rgba(0,0,0,0.14)",
+    color: "#1f2933",
+    fontWeight: 500,
+    cursor: "pointer",
+    transition: "filter 0.2s ease",
+  };
 
   async function loadDemo() {
     setError(null);
@@ -211,234 +254,258 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
-      <h1>Email AI Assistant</h1>
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        background: `
+          linear-gradient(
+            165deg,
+           #e9eef1 0%,
+           #cfdde2 35%,
+           #b8cfd3 65%,
+           #a8c1c6 100%
+          )
+        `,
+        padding: "32px 24px",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "40px",
+          width: "min(520px, 42vw)",
+          height: "100vh",
+          opacity: 0.55,
+          mixBlendMode: "multiply",
+          pointerEvents: "none",
+          transform: "translateY(-50%)",
+          alignItems: "center",
+          justifyContent: "center",
+          display: window.innerWidth < 900 ? "none" : "block",
+        }}
+      >
+        <img
+          src={mailCircle}
+          alt="Email"
+          style={{
+            position: "absolute",
+            top: "22%",
+            left: "170px",
+            width: 60,
+            opacity: 0.65,
+            transform: "rotate(-12deg)",
+          }}
+        />
+        <img
+          src={aiFaceWater}
+          alt="AI background"
+          style={{
+            position: "absolute",
+            top: "70%",
+            left: "100px",
+            width: 45,
+            opacity: 0.9,
+            transform: "rotate(+18deg)",
+            filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.12))",
+          }}
+        />
 
-      <textarea
-        rows={10}
-        style={{ width: "100%", marginBottom: 4 }}
-        placeholder="Paste your emails here or load demo data..."
-        value={rawText}
-        onChange={(e) => setRawText(e.target.value)}
-      />
+        <img
+          src={email3}
+          alt="Floating email"
+          style={{
+            position: "absolute",
+            top: "90%",
+            left: "380px",
+            width: 60,
+            opacity: 0.35,
+            transform: "rotate(-11deg)",
+            filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.12))",
+          }}
+        />
 
-      <p style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
-        Tip: Use <strong>Clean formatting</strong> after pasting emails from
-        Gmail or Outlook. You can separate multiple emails with <code>---</code>
-        .
-      </p>
-
-      <div style={{ marginBottom: 16 }}>
-        <button onClick={loadDemo} style={{ marginRight: 8 }}>
-          Load demo
-        </button>
-
-        <button onClick={cleanFormatting} style={{ marginRight: 8 }}>
-          Clean formatting
-        </button>
-
-        <button onClick={analyzeEmails} disabled={loading}>
-          {loading ? "Analyzing..." : "Analyze"}
-        </button>
-        <button onClick={loadSentLog} disabled={sentLogLoading}>
-          {sentLogLoading ? "Loading log..." : "Outbox"}
-        </button>
+        <img
+          src={mail}
+          alt="Floating email"
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "460px",
+            width: 40,
+            opacity: 0.55,
+          }}
+        />
       </div>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <hr />
-
-      <h2>Results</h2>
-
-      {sentLogOpen && (
+      <div
+        style={{
+          maxWidth: 900,
+          padding: 32,
+          flex: "0 1 900px",
+          transform:
+            window.innerWidth < 900
+              ? "none"
+              : "translateX(clamp(0px, 12vw, 220px))",
+        }}
+      >
         <div
           style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            borderRadius: 8,
-            marginBottom: 12,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              alignItems: "center",
-            }}
-          >
-            <strong>Outbox (simulated)</strong>
-
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => setSentLogOpen(false)}>Close</button>
-
-              <button
-                onClick={clearSentLog}
-                disabled={sentLog.length === 0}
-                style={{ color: "#b00020" }}
-                title="Demo helper: clears the simulated outbox"
-              >
-                Clear (demo)
-              </button>
-            </div>
-          </div>
-
-          <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
-            This is a demo-only outbox. No real emails are sent.
-          </p>
-
-          {sentLog.length === 0 ? (
-            <p style={{ marginTop: 8 }}>No sent items yet.</p>
-          ) : (
-            <ul style={{ marginTop: 8 }}>
-              {sentLog.map((item, idx) => (
-                <li key={idx} style={{ marginBottom: 8 }}>
-                  <div>
-                    <strong>Email:</strong> {item.email_id}
-                  </div>
-                  <div>
-                    <strong>Intent:</strong> {item.intent}
-                  </div>
-                  <div>
-                    <strong>Sent at:</strong> {item.sent_at}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {emails.length === 0 && <p>No emails analyzed yet.</p>}
-
-      {urgentEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-
-          {email.actions?.includes("suggest_reply_now") && (
-            <button onClick={() => suggestReply(email)}>Suggest reply</button>
-          )}
-        </div>
-      ))}
-
-      {followUp && followUp.normal_emails_count > 0 && (
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            marginBottom: 12,
-            borderRadius: 8,
-          }}
-        >
-          <strong>Follow-up</strong>
-          <p style={{ margin: "6px 0" }}>{followUp.message}</p>
-          <p style={{ margin: 0, color: "#444" }}>
-            Suggested time: {followUp.suggested_time}
-          </p>
-        </div>
-      )}
-
-      {normalEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-        </div>
-      ))}
-
-      {lowEmails.map((email) => (
-        <div
-          key={email.id}
-          style={{ border: "1px solid #ddd", padding: 12, marginBottom: 12 }}
-        >
-          <h3 style={{ margin: "0 0 4px 0" }}>
-            {email.subject ?? "No subject"}
-          </h3>
-
-          {email.from && (
-            <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-              <strong>From:</strong> {email.from}
-            </p>
-          )}
-
-          <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-            <strong>Summary:</strong> {email.summary}
-          </p>
-
-          <p style={{ margin: "4px 0" }}>
-            <strong>Urgency:</strong> {email.urgency}
-          </p>
-
-          <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
-        </div>
-      ))}
-
-      {modalOpen && (
-        <div
-          onClick={() => setModalOpen(false)}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.35)",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
+            gap: 12,
+            marginBottom: 24,
           }}
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
+          <h1 style={{ margin: 0 }}>Email AI Assistant</h1>
+          <img
+            src={aiFaceWater}
+            alt="AI"
+            style={{
+              width: 26,
+              height: 26,
+              opacity: 0.9,
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            ...cardStyle,
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 20,
+            overflow: "hidden",
+          }}
+        >
+          <textarea
+            rows={10}
             style={{
               width: "100%",
-              maxWidth: 700,
-              background: "white",
-              borderRadius: 12,
-              padding: 16,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              marginBottom: 4,
+              background: "transparent",
+              border: "none",
+              outline: "none",
+            }}
+            placeholder="Paste your emails here or load demo data..."
+            value={rawText}
+            onChange={(e) => setRawText(e.target.value)}
+          />
+        </div>
+
+        <p
+          style={{
+            fontSize: 18,
+            marginTop: 6,
+            color: "#1f2933",
+          }}
+        >
+          <span style={{ color: "#b00020", fontWeight: 600 }}>Important:</span>{" "}
+          Always use{" "}
+          <span style={{ color: "#b00020", fontWeight: 600 }}>
+            Clean formatting
+          </span>{" "}
+          after pasting emails. You can separate multiple emails with{" "}
+          <code>---</code>.
+        </p>
+
+        <div style={{ marginBottom: 16 }}>
+          <button
+            onClick={loadDemo}
+            onMouseEnter={() => setHoverBtn("loadDemo")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              marginRight: 8,
+              filter: hoverBtn === "loadDemo" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "loadDemo" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "loadDemo"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
+            Load demo
+          </button>
+
+          <button
+            onClick={cleanFormatting}
+            onMouseEnter={() => setHoverBtn("cleanFormatting")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              marginRight: 8,
+              filter:
+                hoverBtn === "cleanFormatting" ? "brightness(1.18)" : "none",
+              transform:
+                hoverBtn === "cleanFormatting" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "cleanFormatting"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
+            Clean formatting
+          </button>
+
+          <button
+            onClick={analyzeEmails}
+            disabled={loading}
+            onMouseEnter={() => setHoverBtn("analyze")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              marginRight: 8,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "default" : "pointer",
+              filter: hoverBtn === "analyze" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "analyze" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "analyze"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
+            {loading ? "Analyzing..." : "Analyze"}
+          </button>
+          <button
+            onClick={loadSentLog}
+            disabled={sentLogLoading}
+            onMouseEnter={() => setHoverBtn("outbox")}
+            onMouseLeave={() => setHoverBtn(null)}
+            style={{
+              ...primaryButtonBase,
+              opacity: sentLogLoading ? 0.7 : 1,
+              cursor: sentLogLoading ? "default" : "pointer",
+              filter: hoverBtn === "outbox" ? "brightness(1.18)" : "none",
+              transform: hoverBtn === "outbox" ? "translateY(-1px)" : "none",
+              boxShadow:
+                hoverBtn === "outbox"
+                  ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                  : "none",
+            }}
+          >
+            {sentLogLoading ? "Loading log..." : "Outbox"}
+          </button>
+        </div>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <hr />
+
+        <h2>Results</h2>
+
+        {sentLogOpen && (
+          <div
+            style={{
+              ...cardStyle,
+              padding: 12,
+              borderRadius: 8,
+              marginBottom: 12,
             }}
           >
             <div
@@ -446,48 +513,335 @@ function App() {
                 display: "flex",
                 justifyContent: "space-between",
                 gap: 12,
+                alignItems: "center",
               }}
             >
-              <h3 style={{ margin: 0 }}>Reply draft</h3>
+              <strong>Outbox (simulated)</strong>
+
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => setSentLogOpen(false)}
+                  onMouseEnter={() => setHoverBtn("outboxClose")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...secondaryButtonBase,
+                    filter:
+                      hoverBtn === "outboxClose" ? "brightness(0.98)" : "none",
+                  }}
+                >
+                  Close
+                </button>
+
+                <button
+                  onClick={clearSentLog}
+                  disabled={sentLog.length === 0}
+                  onMouseEnter={() => setHoverBtn("outboxClear")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  title="Demo helper: clears the simulated outbox"
+                  style={{
+                    ...secondaryButtonBase,
+                    color: "#b00020",
+                    opacity: sentLog.length === 0 ? 0.65 : 1,
+                    cursor: sentLog.length === 0 ? "default" : "pointer",
+                    filter:
+                      hoverBtn === "outboxClear" ? "brightness(0.98)" : "none",
+                  }}
+                >
+                  Clear (demo)
+                </button>
+              </div>
             </div>
 
-            <p style={{ marginTop: 8, color: "#444" }}>
-              Email: {modalEmailId ?? "-"}
+            <p style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
+              This is a demo-only outbox. No real emails are sent.
             </p>
 
-            {modalLoading ? (
-              <p>Generating draft...</p>
+            {sentLog.length === 0 ? (
+              <p style={{ marginTop: 8 }}>No sent items yet.</p>
             ) : (
-              <textarea
-                rows={10}
-                style={{ width: "100%" }}
-                value={modalDraft}
-                onChange={(e) => setModalDraft(e.target.value)}
-              />
-            )}
-
-            <div
-              style={{
-                marginTop: 12,
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 8,
-              }}
-            >
-              <button onClick={() => setModalOpen(false)}>Close</button>
-              <button
-                onClick={approveAndSend}
-                disabled={modalLoading || !modalDraft.trim() || sentJustNow}
-              >
-                {sentJustNow ? "Sent ✓" : "Approve & send"}
-              </button>
-            </div>
-            {approveStatus && (
-              <p style={{ marginTop: 8, color: "#444" }}>{approveStatus}</p>
+              <ul style={{ marginTop: 8 }}>
+                {sentLog.map((item, idx) => (
+                  <li key={idx} style={{ marginBottom: 8 }}>
+                    <div>
+                      <strong>Email:</strong> {item.email_id}
+                    </div>
+                    <div>
+                      <strong>Intent:</strong> {item.intent}
+                    </div>
+                    <div>
+                      <strong>Sent at:</strong> {item.sent_at}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
-        </div>
-      )}
+        )}
+
+        {emails.length === 0 && <p>No emails analyzed yet.</p>}
+
+        {urgentEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
+              {email.subject ?? "No subject"}
+            </div>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+
+            {email.actions?.includes("suggest_reply_now") && (
+              <button
+                onClick={() => suggestReply(email)}
+                onMouseEnter={() => setHoverBtn(`suggest-${email.id}`)}
+                onMouseLeave={() => setHoverBtn(null)}
+                style={{
+                  ...primaryButtonBase,
+                  filter:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "brightness(1.18)"
+                      : "none",
+                  transform:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "translateY(-1px)"
+                      : "none",
+                  boxShadow:
+                    hoverBtn === `suggest-${email.id}`
+                      ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                      : "none",
+                }}
+              >
+                Suggest reply
+              </button>
+            )}
+          </div>
+        ))}
+
+        {followUp && followUp.normal_emails_count > 0 && (
+          <div
+            style={{
+              ...cardStyle,
+              padding: 12,
+              marginBottom: 12,
+              borderRadius: 8,
+            }}
+          >
+            <strong>Follow-up</strong>
+            <p style={{ margin: "6px 0" }}>{followUp.message}</p>
+            <p style={{ margin: 0, color: "#444" }}>
+              Suggested time: {followUp.suggested_time}
+            </p>
+          </div>
+        )}
+
+        {normalEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
+              {email.subject ?? "No subject"}
+            </div>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+          </div>
+        ))}
+
+        {lowEmails.map((email) => (
+          <div
+            key={email.id}
+            style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
+              {email.subject ?? "No subject"}
+            </div>
+
+            {email.from && (
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
+              </p>
+            )}
+
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
+            </p>
+
+            <p style={{ margin: "4px 0" }}>
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
+            </p>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
+          </div>
+        ))}
+
+        {modalOpen && (
+          <div
+            onClick={() => setModalOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "rgba(0,0,0,0.35)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: 700,
+                backgroundColor: "rgba(255, 255, 255, 0.78)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.65)",
+                borderRadius: 12,
+                padding: 16,
+                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 12,
+                }}
+              >
+                <h3 style={{ margin: 0 }}>Reply draft</h3>
+              </div>
+
+              <p style={{ marginTop: 8, color: "#444" }}>
+                Email: {modalEmailId ?? "-"}
+              </p>
+
+              {modalLoading ? (
+                <p>Generating draft...</p>
+              ) : (
+                <div
+                  style={{ ...innerCardStyle, padding: 12, overflow: "hidden" }}
+                >
+                  <textarea
+                    rows={10}
+                    style={{
+                      width: "100%",
+                      background: "transparent",
+                      border: "none",
+                      outline: "none",
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                      fontSize: "14px",
+                    }}
+                    value={modalDraft}
+                    onChange={(e) => setModalDraft(e.target.value)}
+                  />
+                </div>
+              )}
+
+              <div
+                style={{
+                  marginTop: 12,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: 8,
+                }}
+              >
+                <button
+                  onClick={() => setModalOpen(false)}
+                  onMouseEnter={() => setHoverBtn("modalClose")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...secondaryButtonBase,
+                    filter:
+                      hoverBtn === "modalClose" ? "brightness(0.98)" : "none",
+                  }}
+                >
+                  Close
+                </button>
+                <button
+                  onClick={approveAndSend}
+                  disabled={modalLoading || !modalDraft.trim() || sentJustNow}
+                  onMouseEnter={() => setHoverBtn("approveSend")}
+                  onMouseLeave={() => setHoverBtn(null)}
+                  style={{
+                    ...primaryButtonBase,
+                    opacity:
+                      modalLoading || !modalDraft.trim() || sentJustNow
+                        ? 0.7
+                        : 1,
+                    cursor:
+                      modalLoading || !modalDraft.trim() || sentJustNow
+                        ? "default"
+                        : "pointer",
+                    filter:
+                      hoverBtn === "approveSend" ? "brightness(1.18)" : "none",
+                    transform:
+                      hoverBtn === "approveSend" ? "translateY(-1px)" : "none",
+                    boxShadow:
+                      hoverBtn === "approveSend"
+                        ? "0 10px 26px rgba(46, 204, 113, 0.25)"
+                        : "none",
+                  }}
+                >
+                  {sentJustNow ? "Sent ✓" : "Approve & send"}
+                </button>
+              </div>
+              {approveStatus && (
+                <p style={{ marginTop: 8, color: "#444" }}>{approveStatus}</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
