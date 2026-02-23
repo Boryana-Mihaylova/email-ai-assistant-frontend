@@ -123,17 +123,23 @@ Once both services are running, open the frontend URL in your browser to use the
 
 ### Desktop
 
-**Initial view with demo emails loaded**  
-![Index](screenshots/index.PNG)
+**Initial view**  
+![Initial view](screenshots/initial-view.png)
 
-**Emails sorted by urgency after analysis**  
-![Index](screenshots/index.PNG)
+**Emails sorted by urgency after analysis of demo emails**  
+![Emails sorted by urgency](screenshots/demo-emails.png)
 
-**Suggested reply draft opened and edited before approval**  
-![Index](screenshots/index.PNG)
+**Suggested reply draft opened and edited before approval (example 1)**  
+![Reply draft example 1](screenshots/reply-draft-1.png)
+
+**Suggested reply draft opened and edited before approval (example 2)**  
+![Reply draft example 2](screenshots/reply-draft-2.png)
+
+**Suggested reply draft opened and edited before approval (example 3)**  
+![Reply draft example 3](screenshots/reply-draft-3.png)
 
 **Simulated outbox with sent replies**  
-![Index](screenshots/index.PNG)
+![Outbox](screenshots/outbox.png)
 
 ---
 
