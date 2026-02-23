@@ -1,5 +1,9 @@
 import { useState } from "react";
-import inboxIllustration from "./assets/undraw_inbox-cleanup.svg";
+
+import mailCircle from "./assets/email.svg";
+import mail from "./assets/email 2.svg";
+import aiFaceWater from "./assets/ai-face-water.svg";
+import email3 from "./assets/email 3.svg";
 
 type EmailItem = {
   id: number;
@@ -277,7 +281,7 @@ function App() {
           left: "40px",
           width: "min(520px, 42vw)",
           height: "100vh",
-          opacity: 0.48,
+          opacity: 0.55,
           mixBlendMode: "multiply",
           pointerEvents: "none",
           transform: "translateY(-50%)",
@@ -287,12 +291,54 @@ function App() {
         }}
       >
         <img
-          src={inboxIllustration}
-          alt="Inbox cleanup illustration"
+          src={mailCircle}
+          alt="Email"
           style={{
-            width: "100%",
-            maxWidth: 640,
-            filter: "brightness(0.85) contrast(1.45)",
+            position: "absolute",
+            top: "22%",
+            left: "170px",
+            width: 60,
+            opacity: 0.65,
+            transform: "rotate(-12deg)",
+          }}
+        />
+        <img
+          src={aiFaceWater}
+          alt="AI background"
+          style={{
+            position: "absolute",
+            top: "70%",
+            left: "100px",
+            width: 45,
+            opacity: 0.9,
+            transform: "rotate(+18deg)",
+            filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.12))",
+          }}
+        />
+
+        <img
+          src={email3}
+          alt="Floating email"
+          style={{
+            position: "absolute",
+            top: "90%",
+            left: "380px",
+            width: 60,
+            opacity: 0.35,
+            transform: "rotate(-11deg)",
+            filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.12))",
+          }}
+        />
+
+        <img
+          src={mail}
+          alt="Floating email"
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "460px",
+            width: 40,
+            opacity: 0.55,
           }}
         />
       </div>
@@ -304,7 +350,25 @@ function App() {
           transform: "translateX(clamp(0px, 12vw, 220px))",
         }}
       >
-        <h1>Email AI Assistant</h1>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          <h1 style={{ margin: 0 }}>Email AI Assistant</h1>
+          <img
+            src={aiFaceWater}
+            alt="AI"
+            style={{
+              width: 26,
+              height: 26,
+              opacity: 0.9,
+            }}
+          />
+        </div>
 
         <div
           style={{
