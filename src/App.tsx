@@ -518,22 +518,28 @@ function App() {
             key={email.id}
             style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
-            <h3 style={{ margin: "0 0 4px 0" }}>
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
               {email.subject ?? "No subject"}
-            </h3>
+            </div>
 
             {email.from && (
-              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-                <strong>From:</strong> {email.from}
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
               </p>
             )}
 
-            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-              <strong>Summary:</strong> {email.summary}
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
             </p>
 
             <p style={{ margin: "4px 0" }}>
-              <strong>Urgency:</strong> {email.urgency}
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
             </p>
 
             <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
@@ -587,22 +593,28 @@ function App() {
             key={email.id}
             style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
-            <h3 style={{ margin: "0 0 4px 0" }}>
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
               {email.subject ?? "No subject"}
-            </h3>
+            </div>
 
             {email.from && (
-              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-                <strong>From:</strong> {email.from}
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
               </p>
             )}
 
-            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-              <strong>Summary:</strong> {email.summary}
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
             </p>
 
             <p style={{ margin: "4px 0" }}>
-              <strong>Urgency:</strong> {email.urgency}
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
             </p>
 
             <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
@@ -614,22 +626,28 @@ function App() {
             key={email.id}
             style={{ ...cardStyle, padding: 12, marginBottom: 12 }}
           >
-            <h3 style={{ margin: "0 0 4px 0" }}>
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 4,
+                fontSize: 18,
+              }}
+            >
               {email.subject ?? "No subject"}
-            </h3>
+            </div>
 
             {email.from && (
-              <p style={{ margin: "0 0 4px 0", color: "#666", fontSize: 13 }}>
-                <strong>From:</strong> {email.from}
+              <p style={{ margin: "0 0 4px 0", color: "#666" }}>
+                <span style={{ fontWeight: 500 }}>From:</span> {email.from}
               </p>
             )}
 
-            <p style={{ margin: "4px 0", color: "#555", fontSize: 14 }}>
-              <strong>Summary:</strong> {email.summary}
+            <p style={{ margin: "4px 0", color: "#555" }}>
+              <span style={{ fontWeight: 500 }}>Summary:</span> {email.summary}
             </p>
 
             <p style={{ margin: "4px 0" }}>
-              <strong>Urgency:</strong> {email.urgency}
+              <span style={{ fontWeight: 500 }}>Urgency:</span> {email.urgency}
             </p>
 
             <p style={{ margin: "4px 0", color: "#444" }}>{email.reason}</p>
