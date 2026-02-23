@@ -285,9 +285,9 @@ function App() {
           mixBlendMode: "multiply",
           pointerEvents: "none",
           transform: "translateY(-50%)",
-          display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          display: window.innerWidth < 900 ? "none" : "block",
         }}
       >
         <img
@@ -347,7 +347,10 @@ function App() {
           maxWidth: 900,
           padding: 32,
           flex: "0 1 900px",
-          transform: "translateX(clamp(0px, 12vw, 220px))",
+          transform:
+            window.innerWidth < 900
+              ? "none"
+              : "translateX(clamp(0px, 12vw, 220px))",
         }}
       >
         <div
