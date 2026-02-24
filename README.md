@@ -2,15 +2,17 @@
 
 AI-powered inbox assistant for summarizing, prioritizing, and drafting email replies.
 
-The user stays in control: no emails are sent automatically.  
-AI behavior is intentionally simulated to ensure predictable demo results and safe experimentation. 
+AI behavior is intentionally simulated to illustrate how an AI-assisted inbox tool could help users summarize emails, identify urgency, and prepare reply drafts quickly and efficiently, saving time.
 
 ## About the Project
 
-This application focuses on helping users summarize incoming messages, identify urgency, and prepare reply drafts for incoming emails.
-AI is used as a decision-support tool rather than full automation, providing suggestions while leaving the final action to the user.
-The user remains fully in control: no emails are sent automatically, and all actions require explicit approval.
-The project is intentionally scoped as a focused demo to showcase API design, AI integration patterns, and UX-focused constraints.
+This application illustrates how AI can be used as a decision-support tool by providing convenient sorting of incoming emails based on urgency and preparing appropriate replies for the most critical messages.
+
+The assistant also keeps track of non-urgent emails that still require attention, informing the user and suggesting when follow-up replies should be prepared.
+
+At all times, the user remains fully in control: no emails are sent automatically, and all actions require explicit user approval.
+
+The project is intentionally presented as a simulated demo to showcase API design, AI integration patterns, and control mechanisms over AI-assisted behavior, with the goal of building secure, reliable, and user-centered services.
 
 ---
 
