@@ -28,8 +28,6 @@ The application includes a built-in demo mode with sample emails, allowing quick
 Users can also test the application with their own emails by pasting content into the input area. Multiple emails can be analyzed together when separated by `---`.  
 For pasted emails, a Clean Formatting button is provided to clean content from common email clients such as Gmail or Outlook.
 
-AI behavior in the demo is intentionally simulated using predefined logic. No real emails are sent, and all reply actions are fully controlled by the user.
-
 ---
 
 ## Tech Stack
