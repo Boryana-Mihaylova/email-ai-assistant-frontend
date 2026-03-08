@@ -111,8 +111,14 @@ function App() {
   }
 
   async function analyzeEmails() {
-    setLoading(true);
     setError(null);
+
+    if (!rawText.trim()) {
+      setError("Please paste email content before clicking Analyze.");
+      return;
+    }
+
+    setLoading(true);
     if (rawText !== lastAnalyzedText) {
       const clearRes = await fetch(`${API_BASE}/emails/sent/clear`, {
         method: "POST",
