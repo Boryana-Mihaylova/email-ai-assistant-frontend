@@ -111,8 +111,14 @@ function App() {
   }
 
   async function analyzeEmails() {
-    setLoading(true);
     setError(null);
+
+    if (!rawText.trim()) {
+      setError("Please paste email content before clicking Analyze.");
+      return;
+    }
+
+    setLoading(true);
     if (rawText !== lastAnalyzedText) {
       const clearRes = await fetch(`${API_BASE}/emails/sent/clear`, {
         method: "POST",
@@ -243,7 +249,7 @@ function App() {
       const data = await res.json();
       setApproveStatus(data.message ?? "Marked as sent (simulated).");
       setEmails((prev) => prev.filter((e) => e.id !== modalEmailId));
-      setTimeout(() => setModalOpen(false), 800);
+      setTimeout(() => setModalOpen(false), 400);
       setSentJustNow(true);
       if (sentLogOpen) {
         await loadSentLog();
