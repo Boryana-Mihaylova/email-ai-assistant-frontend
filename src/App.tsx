@@ -249,7 +249,7 @@ function App() {
       const data = await res.json();
       setApproveStatus(data.message ?? "Marked as sent (simulated).");
       setEmails((prev) => prev.filter((e) => e.id !== modalEmailId));
-      setTimeout(() => setModalOpen(false), 800);
+      setTimeout(() => setModalOpen(false), 400);
       setSentJustNow(true);
       if (sentLogOpen) {
         await loadSentLog();
