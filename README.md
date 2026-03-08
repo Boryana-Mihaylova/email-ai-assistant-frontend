@@ -35,15 +35,17 @@ For pasted emails, a Clean Formatting button is provided to clean content from c
 ## Tech Stack
 
 ### Backend
+
     - Python
     - FastAPI
     - Uvicorn
-    
+
 ### Frontend
+
     - React
     - TypeScript
     - Vite
-    
+
 ---
 
 ## Features
@@ -67,12 +69,14 @@ The application consists of two separate projects: a frontend and a backend serv
 ### Backend (FastAPI)
 
 1. Clone the backend repository:
+
    ```bash
-   git clone https://github.com/your-username/email-ai-assistant-backend.git
+   git clone https://github.com/Boryana-Mihaylova/email-ai-assistant-backend
    cd email-ai-assistant-backend
    ```
 
 2. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -81,31 +85,34 @@ The application consists of two separate projects: a frontend and a backend serv
    ```bash
    uvicorn main:app --reload
    ```
-   
+
 The backend will be available at:
 http://127.0.0.1:8000
-
 
 ### Frontend (React)
 
 1. Clone the frontend repository:
    ```bash
-   git clone https://github.com/your-username/email-ai-assistant-frontend.git
+   git clone https://github.com/Boryana-Mihaylova/email-ai-assistant-frontend
    cd email-ai-assistant-frontend
    ```
-   
 2. Install dependencies:
    ```bash
    npm install
    ```
-   
 3. Start the development server:
    ```bash
    npm run dev
    ```
-   
+
 The frontend will be available at:
 http://localhost:5173
+
+# <<<<<<< HEAD
+
+Once both services are running, open the frontend URL in your browser to use the application.
+
+> > > > > > > improve/frontend-polish
 
 ---
 
@@ -153,4 +160,3 @@ Built as a learning and portfolio project
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-    
