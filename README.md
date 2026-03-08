@@ -108,12 +108,6 @@ http://127.0.0.1:8000
 The frontend will be available at:
 http://localhost:5173
 
-# <<<<<<< HEAD
-
-Once both services are running, open the frontend URL in your browser to use the application.
-
-> > > > > > > improve/frontend-polish
-
 ---
 
 ## Future Improvements
