@@ -112,7 +112,6 @@ http://localhost:5173
 
 ## Future Improvements
 
-- Improved input validation and clearer UX feedback for edge cases
 - More advanced AI prompt logic and response handling
 - Integration with real email providers (intentionally out of scope for the current demo)
 
