@@ -1,35 +1,10 @@
 import { useState } from "react";
+import type { EmailItem, SentItem, FollowUp } from "./types";
 
 import mailCircle from "./assets/email.svg";
 import mail from "./assets/email 2.svg";
 import aiFaceWater from "./assets/ai-face-water.svg";
 import email3 from "./assets/email 3.svg";
-
-type EmailItem = {
-  id: number;
-  subject?: string;
-  from?: string;
-  content: string;
-  summary: string;
-  urgency: string;
-  intent?: string;
-  reason: string;
-  actions?: string[];
-};
-
-type SentItem = {
-  email_id: number;
-  intent: string;
-  draft: string;
-  status: string;
-  sent_at: string;
-};
-
-type FollowUp = {
-  normal_emails_count: number;
-  suggested_time: string;
-  message: string;
-};
 
 function App() {
   const [rawText, setRawText] = useState("");
