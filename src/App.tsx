@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { EmailItem, SentItem, FollowUp } from "./types";
+import { API_BASE } from "./config";
 
 import mailCircle from "./assets/email.svg";
 import mail from "./assets/email 2.svg";
@@ -29,7 +30,6 @@ function App() {
   const [analyzeHover, setAnalyzeHover] = useState(false);
   const [hoverBtn, setHoverBtn] = useState<string | null>(null);
 
-  const API_BASE = "http://127.0.0.1:8000";
   const cardStyle: React.CSSProperties = {
     backgroundColor: "rgba(255, 255, 255, 0.65)",
     borderRadius: 16,
