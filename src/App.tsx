@@ -34,7 +34,6 @@ function App() {
   const [sentLogLoading, setSentLogLoading] = useState(false);
   const [sentJustNow, setSentJustNow] = useState(false);
   const [lastAnalyzedText, setLastAnalyzedText] = useState("");
-  const [analyzeHover, setAnalyzeHover] = useState(false);
   const [hoverBtn, setHoverBtn] = useState<string | null>(null);
 
   async function loadDemo() {
