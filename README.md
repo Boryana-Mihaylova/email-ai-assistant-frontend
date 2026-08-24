@@ -1,6 +1,6 @@
 # Email AI Assistant
 
-AI-powered inbox assistant for summarizing, prioritizing, and drafting email replies.
+AI inbox assistant for summarizing, prioritizing, and drafting email replies.
 
 AI behavior is intentionally simulated to illustrate how an AI-assisted inbox tool could help users summarize emails, identify urgency, and prepare reply drafts quickly and efficiently, saving time.
 
